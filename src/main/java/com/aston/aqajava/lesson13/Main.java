@@ -12,40 +12,32 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.alertIsPresent;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
         WebDriver driver = new ChromeDriver();
         driver.get("https://mts.by");
-        WebElement phoneNumber = driver.findElement(By.xpath("//*[@id=\"connection-phone\"]"));
-        phoneNumber.sendKeys("297777777");
-        WebElement sum = driver.findElement(By.xpath("//*[@id=\"connection-sum\"]"));
-        sum.sendKeys("10");
-
-        WebElement cookie = driver.findElement(By.xpath("//button[@class='cookie__close']"));
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(10));
+        WebElement cookie = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@id=\"cookie-agree\"]")));
         cookie.click();
 
-        WebElement button = driver.findElement(By.xpath("//*[@id=\"pay-connection\"]/button"));
-        button.click();
-        WebElement popup = driver.findElement(By.xpath("//div[@class='app-wrapper__content']"));
-        System.out.println(popup.isDisplayed());
+
+        WebElement phoneNumber = driver.findElement(By.xpath("//input[@class=\"phone\"]"));
+        phoneNumber.sendKeys("297777777");
+
+        WebElement replenishmentSum = driver.findElement(By.xpath("//input[@class=\"total_rub\"]"));
+        replenishmentSum.sendKeys("10");
 
 
+        WebElement continueButton = driver.findElement(By.xpath("//button[@class=\"button button__default \"]"));
+        continueButton.click();
+
+
+        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div/app-payment-container ")));
 
     driver.quit();
 
     }
 }
-
-
-//*[@id="pay-section"]/div/div/div[2]/section/div
-//*[@id="pay-section"]/div/div/div[2]/section/div
-//*[@id="pay-section"]/div/div/div[2]/section/div/div[2]/ul/li[1]/img
-//*[@id="pay-section"]/div/div/div[2]/section/div/div[2]
-//div[@class='app-payment-container']
-//*[@id="pay-section"]/div/div/div[2]/section/div/a
-
-//html/body/app-root/div/div/app-payment-container
-//html/body/app-root/div/div
-
-//new WebDriverWait(getWebDriver(), 10).until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id="pay-connection"]/button"))).click();

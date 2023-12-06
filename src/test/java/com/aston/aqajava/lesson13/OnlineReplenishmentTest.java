@@ -7,7 +7,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,17 +39,22 @@ class OnlineReplenishmentTest {
 
     @Test
     public void testNextButton(){
-        WebElement phoneNumber = driver.findElement(By.xpath("//*[@id=\"connection-phone\"]"));
-        phoneNumber.sendKeys("297777777");
-        WebElement sum = driver.findElement(By.xpath("//*[@id=\"connection-sum\"]"));
-        sum.sendKeys("10");
-
-        WebElement cookie = driver.findElement(By.xpath("//button[@class='cookie__close']"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement cookie = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@id=\"cookie-agree\"]")));
         cookie.click();
 
-        WebElement button = driver.findElement(By.xpath("//*[@id=\"pay-connection\"]/button"));
-        button.click();
-        WebElement popup = driver.findElement(By.xpath("//div[@class='app-wrapper__content']"));
+        WebElement phoneNumber = driver.findElement(By.xpath("//input[@class=\"phone\"]"));
+        phoneNumber.sendKeys("297777777");
+
+        WebElement replenishmentSum = driver.findElement(By.xpath("//input[@class=\"total_rub\"]"));
+        replenishmentSum.sendKeys("10");
+
+
+        WebElement continueButton = driver.findElement(By.xpath("//button[@class=\"button button__default \"]"));
+        continueButton.click();
+
+
+        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div/app-payment-container ")));
         assertTrue(popup.isDisplayed());
     }
     @Test
