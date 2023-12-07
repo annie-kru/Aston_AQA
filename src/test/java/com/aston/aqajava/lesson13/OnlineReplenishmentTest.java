@@ -36,11 +36,19 @@ class OnlineReplenishmentTest {
         List<WebElement> paymentSystemLogos = driver.findElements(By.xpath("//div[@class='pay__wrapper']//ul//img"));
         assertFalse(paymentSystemLogos.isEmpty());
     }
-
+    @Test
+    public void testPaymentServiceDetails(){
+        WebElement serviceInfoLink = driver.findElement(By.xpath("//div[@class='pay__wrapper']//a"));
+        serviceInfoLink.click();
+        assertEquals(driver.getCurrentUrl(),"https://www.mts.by/help/poryadok-oplaty-i-bezopasnost-internet-platezhey/");
+    }
     @Test
     public void testNextButton(){
+        driver.get("https://www.mts.by/");
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement cookie = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@id=\"cookie-agree\"]")));
+        WebElement cookie = wait.until(ExpectedConditions.
+                visibilityOfElementLocated(By.xpath("//button[@id=\"cookie-agree\"]")));
         cookie.click();
 
         WebElement phoneNumber = driver.findElement(By.xpath("//input[@class=\"phone\"]"));
@@ -49,20 +57,18 @@ class OnlineReplenishmentTest {
         WebElement replenishmentSum = driver.findElement(By.xpath("//input[@class=\"total_rub\"]"));
         replenishmentSum.sendKeys("10");
 
-
-        WebElement continueButton = driver.findElement(By.xpath("//button[@class=\"button button__default \"]"));
+        WebElement continueButton = driver.findElement
+                (By.xpath("//form[@id='pay-connection']//button[@type='submit']"));
         continueButton.click();
+        driver.switchTo().frame(wait.until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//iframe[@class='bepaid-iframe']"))));
 
+        WebElement popup = wait.until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//app-payment-container")));
 
-        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div/app-payment-container ")));
         assertTrue(popup.isDisplayed());
     }
-    @Test
-    public void testPaymentServiceDetails(){
-        WebElement serviceInfoLink = driver.findElement(By.xpath("//div[@class='pay__wrapper']//a"));
-        serviceInfoLink.click();
-        assertEquals(driver.getCurrentUrl(),"https://www.mts.by/help/poryadok-oplaty-i-bezopasnost-internet-platezhey/");
-    }
+
     @AfterAll
     public static void tearDown(){
         driver.quit();
