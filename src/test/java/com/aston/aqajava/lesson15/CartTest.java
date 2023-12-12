@@ -46,6 +46,9 @@ public class CartTest {
         action.click(product2).build().perform();
         add.addToCart();
         Thread.sleep(2000);
+        action.click(product3).build().perform();
+        add.addToCart();
+        Thread.sleep(2000);
 
         WebElement cart = driver.findElement(By.xpath("//div[@class=\"navbar-pc__item j-item-basket\"]"));
         action.click(cart).build().perform();
