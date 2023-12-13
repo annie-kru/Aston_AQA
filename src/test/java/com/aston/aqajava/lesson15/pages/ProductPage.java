@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ProductPage {
     WebDriver driver;
-    List<Product> addedProducts= new ArrayList<>();
+    List<Product> addedProducts = new ArrayList<>();
 
 
     public ProductPage(WebDriver driver){
