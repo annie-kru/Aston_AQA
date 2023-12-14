@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
+
+import java.util.HashMap;
+
 import static org.hamcrest.Matchers.*;
 
 class PostmanEchoTest {
@@ -26,23 +29,29 @@ class PostmanEchoTest {
     @Test
     public void post(){
         RestAssured.baseURI = "https://postman-echo.com";
+        HashMap data = new HashMap<>();
+        data.put("foo1", "bar1");
+        data.put("foo2", "bar2");
 
         given()
-                .param("foo1", "bar1")
-                .param("foo2", "bar2")
+                .contentType("application/json")
+                .body(data)
                 .when()
                 .post("/post")
                 .then()
-                .body("args.foo1", equalTo("bar1"))
-                .body("args.foo2", equalTo("bar2"));
+                .statusCode(200)
+                .body("json.foo1", equalTo("bar1"))
+                .body("json.foo2", equalTo("bar2"));
     }
     @Test
     public void put(){
-        RestAssured.given()
+        RestAssured.baseURI = "https://postman-echo.com";
+
+        given()
                 .header("Content-Type", "application/json")
                 .body("{\"foo1\": \"bar1\", \"foo2\": \"bar2\"}")
                 .when()
-                .put("https://postman-echo.com/put")
+                .put("/put")
                 .then()
                 .statusCode(200)
                 .body("json.foo1", equalTo("bar1"))
@@ -50,10 +59,11 @@ class PostmanEchoTest {
     }
     @Test
     public void delete(){
-        RestAssured.delete("https://postman-echo.com/delete")
+        RestAssured.baseURI = "https://postman-echo.com";
+
+        RestAssured.delete("/delete")
                 .then()
                 .statusCode(200)
                 .body("url", equalTo("https://postman-echo.com/delete"));
     }
-
 }
