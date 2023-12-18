@@ -1,6 +1,8 @@
 package com.aston.aqajava.lesson17;
 
 import io.appium.java_client.android.AndroidDriver;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -41,6 +43,8 @@ class CalcTest {
     By result = By.id("com.google.android.calculator:id/result_final");
 
     @Test
+    @DisplayName("Checking the result of addition")
+    @Severity(SeverityLevel.CRITICAL)
     public void testAddition(){
         driver.findElement(six).click();
         driver.findElement(plus).click();
@@ -51,7 +55,9 @@ class CalcTest {
         assertTrue(resultText.equals("8"));
     }
     @Test
-    public void testSubstraction(){
+    @DisplayName("Checking the result of subtraction")
+    @Severity(SeverityLevel.CRITICAL)
+    public void testSubtraction(){
         driver.findElement(six).click();
         driver.findElement(minus).click();
         driver.findElement(two).click();
@@ -61,6 +67,8 @@ class CalcTest {
         assertTrue(resultText.equals("4"));
     }
     @Test
+    @DisplayName("Checking the result of multiplication")
+    @Severity(SeverityLevel.CRITICAL)
     public void testMultiplication(){
         driver.findElement(six).click();
         driver.findElement(multiply).click();
@@ -71,6 +79,8 @@ class CalcTest {
         assertTrue(resultText.equals("12"));
     }
     @Test
+    @DisplayName("Checking the result of division")
+    @Severity(SeverityLevel.CRITICAL)
     public void testDivision(){
         driver.findElement(six).click();
         driver.findElement(divide).click();
